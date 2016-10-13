@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        
+        <title>{% block title %}QuizzIt{% endblock %}</title>
+        
+        {% block stylesheets %}
+            {% stylesheets 
+                'bundles/General/css/*'
+            %}
+                <link rel="stylesheet" type="text/css" href="{{ asset('bundles/bmatznerfontawesome/css/font-awesome.min.css') }}" />
+                <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+            {% endstylesheets %}
+        {% endblock %}
+        
+        {% image '@GeneralBundle/Resources/public/images/logo.png' %}
+                <link rel="icon" type="image/x-icon" href="{{ asset_url }}" />
+            {% endimage %}
+    </head>
+    <body>
+        
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid col-xs-offset-1 col-xs-10">
+                
+                <div class="navbar-header">
+                    
+                    <a class="navbar-brand" href="{{ path('homepage') }}">Quizz It</a>
+                </div>
+                
+                <div class="collapse navbar-collapse">
+                    
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <ul class="nav navbar-nav">
+                            <li><a href="{{path('myquizz') }}">Mes Quizz</a></li>
+                            <li><a href="{{path('myresults') }}">Mes Résultats</a></li>
+                            {#<li><a href="#">Mon Compte</a></li>#}
+                        </ul>
+
+                        <ul class="nav navbar-right navbar-nav">
+                            {% if "ROLE_ADMIN" in app.user.roles %}
+                                <li><a href="{{path('admin_homepage') }}">Administration</a></li>
+                            {% endif %}
+                            <li class=""><a href='{{path('privateprofile', { 'userid': app.user.id }) }}'><b>{{ app.user.username }}</b></a></li>
+                            <li><a href="{{path('logout') }}">Déconnexion</a></li>
+                        </ul>
+                    {% else %}     
+                    <ul class="nav navbar-right navbar-nav">
+                        <li><a href="{{path('login') }}">Connexion</a></li>
+                        <li><a href="{{path('register') }}">Inscription</a></li>
+                    </ul>
+                    {% endif %}
+                    
+                </div>
+                
+            </div>
+        </nav>
+        {% block body %}{% endblock %}
+        
+         <footer class="navbar-fixed-bottom">
+        <div class="footer-copyright text-center">
+            {% image '@GeneralBundle/Resources/public/images/logo.png' %}
+                <img src="{{ asset_url }}" height="50px"/>
+            {% endimage %}
+            QuizzIt <i>développé par Yoann Bohssain</i>
+        </div>
+    </footer>
+        
+        {% block javascripts %}
+            {% javascripts
+                        '@GeneralBundle/Resources/public/js/jquery-1.10.1.min.js'
+                        '@GeneralBundle/Resources/public/js/bootstrap.min.js'
+                        '@GeneralBundle/Resources/public/js/html5shiv.js'
+                        '@GeneralBundle/Resources/public/js/respond.min.js'
+                        '@GeneralBundle/Resources/public/js/custom.js'
+                        '@GeneralBundle/Resources/public/js/spin.min.js'
+                        %}
+                        <script src="{{ asset_url }}"></script>
+                    {% endjavascripts %}
+        {% endblock %}
+    </body>
+    
+   
+</html>

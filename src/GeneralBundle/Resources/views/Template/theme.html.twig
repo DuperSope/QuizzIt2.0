@@ -1,0 +1,77 @@
+<div class="col-xs-8">
+    <div class="tabbable tabs-left ">
+            <ul id="ul" class="nav nav-tabs">
+                {% for theme in themes %}
+                    <li class="theme" i="{{theme.id}}" name="{{ theme.name }}">
+                        <a href="#{{theme.id}}" data-toggle="tab">{{ theme.name }}</a>
+                        {% if(theme_admin == 1)%}<btn class="btn btn-warning"><a href="{{path("admin_updatetheme", { 'themeid': theme.id })}}" class="no-deco">Modifier</a></btn>{% endif %}
+                    </li>
+                {% endfor %}
+                {% if(theme_admin == 1)%}<li id="addbtn" parent="" level="0" class="btn btn-primary addtheme" onClick="addTheme(this)">Ajouter</li>{% endif %}
+            </ul>
+            
+        </div>
+
+        <div class="tab-content">
+            {% for theme in themes %}
+
+                <div class="tab-pane" id="{{theme.id}}">
+                    <div class="tabbable tabs-left">
+                        <ul id="ul{{theme.id}}" class="nav nav-tabs">
+                            {% for theme1 in theme.child %}
+                                <li class="theme" i="{{theme1.id}}" name="{{ theme1.name }}"><a href="#{{theme1.id}}" data-toggle="tab">{{ theme1.name }}</a>
+                                    {% if(theme_admin == 1)%}<btn class="btn btn-warning"><a href="{{path("admin_updatetheme", { 'themeid': theme1.id })}}" class="no-deco">Modifier</a></btn>{% endif %}
+                                </li>
+                            {% endfor %}
+                            {% if(theme_admin == 1)%}<li id="addbtn{{theme.id}}" parent="{{theme.id}}" level="1" class="btn btn-primary addtheme" onClick="addTheme(this)">Ajouter</li>{% endif %}
+                        </ul>
+                    </div>
+
+                   <div class="tab-content">
+
+                       {% for theme1 in theme.child %}
+
+                            <div class="tab-pane" id="{{theme1.id}}">
+                                <div class="tabbable tabs-left">
+                                    <ul id="ul{{theme1.id}}" class="nav nav-tabs">
+                                        {% for theme2 in theme1.child %}
+                                            <li class="theme"i="{{theme2.id}}" name="{{ theme2.name }}"><a href="#{{theme2.id}}" data-toggle="tab">{{ theme2.name }}</a>
+                                                {% if(theme_admin == 1)%}<btn class="btn btn-warning"><a href="{{path("admin_updatetheme", { 'themeid': theme2.id })}}" class="no-deco">Modifier</a></btn>{% endif %}
+                                            </li>
+                                        {% endfor %}
+                                        {% if(theme_admin == 1)%}<li id="addbtn{{theme1.id}}" parent="{{theme1.id}}" level="2" class="btn btn-primary addtheme" onClick="addTheme(this)">Ajouter</li>{% endif %}
+                                    </ul>
+                                </div>
+
+                               <div class="tab-content">
+                                   {% for theme2 in theme1.child %}
+
+                                        <div class="tab-pane" id="{{theme2.id}}">
+                                            <div class="tabbable tabs-left">
+                                                <ul id="ul{{theme2.id}}" class="nav nav-tabs">
+                                                    {% for theme3 in theme2.child %}
+                                                        <li class="theme" i="{{theme3.id}}" name="{{ theme3.name }}"><a href="#{{theme3.id}}" data-toggle="tab">{{ theme3.name }}</a>
+                                                            {% if(theme_admin == 1)%}<btn class="btn btn-warning"><a href="{{path("admin_updatetheme", { 'themeid': theme3.id })}}" class="no-deco">Modifier</a></btn>{% endif %}
+                                                        </li>
+                                                    {% endfor %}
+                                                    {% if(theme_admin == 1) %}<li id="addbtn{{theme2.id}}" parent="{{theme2.id}}" level="2" class="btn btn-primary addtheme" onClick="addTheme(this)">Ajouter</li>{% endif %}
+                                                </ul>
+                                            </div>
+
+                                           <div class="tab-content col-xs-10">
+
+                                           </div>
+                                        </div>
+
+                                    {% endfor %}
+                               </div>
+                            </div>
+
+                        {% endfor %}
+
+                   </div>
+                </div>
+
+            {% endfor %}
+        </div>
+</div>

@@ -1,0 +1,14 @@
+{% extends "::base.html.twig" %}
+
+{% block title %} Erreur - {{ parent() }} {% endblock %}
+
+
+{% block body %}
+    <div class="container-fluid text-center">
+        
+        <h1>Ce Quizz a été supprimé.</h1>
+        
+        <a href='{{path('homepage')}}'>Retourner à l'accueil.</a>
+                                  
+    </div>
+{% endblock %}

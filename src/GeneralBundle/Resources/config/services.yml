@@ -1,0 +1,6 @@
+services:
+    thememanager:
+        class:  GeneralBundle\Manager\ThemeManager
+#    general.example:
+#        class: GeneralBundle\Example
+#        arguments: ["@service_id", "plain_value", %parameter%]

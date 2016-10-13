@@ -1,0 +1,41 @@
+{% extends "::base.html.twig" %}
+
+{% block title %} Recherche par thème - {{ parent() }} {% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+            {% javascripts
+                        '@GeneralBundle/Resources/public/bytheme.js'
+                        %}
+                        <script src="{{ asset_url }}"></script>
+                    {% endjavascripts %}
+        {% endblock %}
+
+
+{% block body %}
+    
+    <div class="col-xs-10 col-xs-offset-1 text-center">
+        <h1>Recherche par thème</h1><hr/>
+        
+        <div class="col-xs-3">
+            <div class="tabbable tabs-left">
+                <ul id='themecontainer' class="nav nav-tabs">
+                    {% for theme in themes %}
+                        <li class='{{theme.id}}'><a class="theme" id='{{theme.id}}' i=0 lvl=0 href='#'>{{theme.name}}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+                
+        <div id="quizzcontainer" class="col-xs-7">
+            
+        </div>
+           
+    </div>
+                
+    <span class="hidden" value="{{ path('AJAXgetquizzbytheme') }}" id="getquizzpath"></span>
+    <span class="hidden" value="{{ path('AJAXgettheme') }}" id="getthemepath"></span>
+    <span class="hidden" value="{{ path('AJAXreturntheme') }}" id="returnthemepath"></span>
+    <span class="hidden" value="{{ path('quizz_preview', { 'quizzid': 1 }) }}" id="quizzpath"></span>
+{% endblock %}

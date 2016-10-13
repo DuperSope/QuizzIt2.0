@@ -1,0 +1,13 @@
+admin_homepage:
+    path:     /
+    defaults: { _controller: AdminBundle:Admin:index }
+
+admin_theme:
+    path:   /themes
+    defaults: { _controller: AdminBundle:Admin:theme }
+    
+admin_updatetheme:
+    path:   /themes/update-{themeid}
+    defaults: { _controller: AdminBundle:Admin:updateTheme }
+    requirements:
+        themeid: \d+

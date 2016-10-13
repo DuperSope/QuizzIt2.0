@@ -1,0 +1,70 @@
+{% extends "::base.html.twig" %}
+
+{% block title %} Signaler une erreur - {{ parent() }} {% endblock %}
+
+
+{% block body %}
+    
+    <div class="container-fluid">
+              
+        <div class='text-center row col-xs-8 col-xs-offset-2'>
+            <h1>Signaler une erreur</h1><br/>
+            {% if reported == 1 %}
+                <p>Cette question a déjà été l'objet de nombreux signalements et n'en nécessite pas plus.</p>
+                <a href='{{path('myresults')}}'>Retour à Mes Résultats</a></p>
+            {% elseif reported == 2 %}
+                <p>Vous avez déjà signalé cette question, merci.</p>
+                <a href='{{path('myresults')}}'>Retour à Mes Résultats</a></p>
+            {% elseif reported == 10 %}
+                <p>Votre signalement a bien été envoyé, merci !</p>
+                <a href='{{path('myresults')}}'>Retour à Mes Résultats</a></p>
+            {% endif %}
+        </div>
+
+        {% if reported == 0 %}
+            <div class='text-center col-xs-6 col-xs-offset-1'>
+                    <div class=' col-xs-10 col-xs-offset-1'>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                {{question.question }}
+                            </div>
+                        </div>
+
+                    <div class=' col-xs-8 col-xs-offset-2'>        
+                        {% if question.questiontype == 1 %}
+                            Réponse correcte :
+                            <div class="alert alert-success">{{ question.answer }}</div>
+                        {% else %}
+                            {% set answers = question.answer|split('[||]') %}           {#Je sépare les différentes réponses#}
+                            {% for answer in answers %}                                 {#Pour chaque réponse#}
+                                {% if loop.last %}
+                                {% else %}
+                                    {% if answer[0:3] == "{T}" %}                           {#Je regarde si c'est la juste#}
+                                        {% set answer = answer|replace({'{T}' : ''}) %}        {#Si oui j'enlève le {T}#}
+                                        {% set class = "success" %}                         {#Et je mets la classe success#}
+                                    {% else %}
+                                        {% set class = "danger" %}                          {#Sinon je mets la classe danger#}
+                                    {% endif %}
+
+                                    <div class='alert alert-{{class }}'>{{ answer }}</div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+                    
+            <div class='text-center col-xs-3'>
+                <br/><br/><h4>Contenu de l'erreur :</h4>
+                
+                {{form_start(form)}}                       
+                {{form_widget(form.content, { 'attr': { 'class': ' form-control ' } }) }}
+                <br/><br/><input type='submit' value='Envoyer' class="btn btn-primary">
+                {{ form_widget(form.question, { 'attr': { 'value': question.id } }) }}
+                <div class='hidden'>{{ form_widget(form._token) }}</div>
+            </div>
+
+        {% endif %}
+        
+    </div>
+{% endblock %}

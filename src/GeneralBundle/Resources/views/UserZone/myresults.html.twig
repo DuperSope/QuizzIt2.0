@@ -1,0 +1,90 @@
+{% extends "::base.html.twig" %}
+
+{% block title %} Mes Résultats - {{ parent() }} {% endblock %}
+
+
+{% block body %}
+    <div class="container-fluid">
+        
+{#        ONGLET PRINCIPAL GAUCHE   #}
+        <div class="tabbable tabs-left ">
+            <br />
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#quizzlist" data-toggle="tab">Mes Résultats</a></li>
+                {% if reports|length() %}<li><a href="#reports" data-toggle='tab'>Mes signalements</a></li>{% endif %}
+            </ul>
+        </div>
+        
+{#        TAB-CONTENT PRINCIPAL     #}
+        <div class="tab-content col-xs-10">
+
+    {#        Liste des résultats       #}
+            <div class="col-xs-9 col-xs-offset-1 tab-pane active" id="quizzlist" >
+
+                <h1 class="text-center">Mes Résultats</h1>
+                
+                    <table class="text-center table table-striped">
+                        <tr>
+                            <th class="text-center">Nom du Quizz</th>
+                            <th class="text-center">Réussite</th>
+                            <th class='text-center'>Date</th>
+                        </tr>
+
+                        {% if quizzdones|length() == 0 %}
+                            <tr><td colspan='3'></td></tr><tr></tr>
+                            <tr>
+                                <td class='text-center' colspan='3'><i>Vous n'avez pas encore effectué de Quizz.</i></td>
+                            </tr>
+                            <tr></tr><tr><td colspan='3'></td></tr>
+                        {% endif %}
+                        {% for quizzdone in quizzdones %}
+                            <tr>
+                                <td><a href="{{ path('quizz_result', { 'quizzdoneid' : quizzdone.id }) }}">{{ quizzdone.quizz.name }} {% if quizzdone.nbDo > 1 %}<i><small>({{ quizzdone.nbDo }})</small></i>{% endif %}</a></td>
+                                <td><span class="{% if(quizzdone.percentage >= 75) %} success{% elseif(quizzdone.percentage >= 40) %} warning{% else %} danger{% endif %}">{{ quizzdone.percentage }}%</span></td>
+                                <td>{{quizzdone.date|date('d/m/y') }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+            
+            </div>
+                
+               
+    {#        Liste des erreurs signalées   #}
+            {% if reports|length() %}
+                
+                <div class="col-xs-9 tab-pane" id="reports" >
+                    <div class="tabbable tabs-left" id="errorslateral">
+                        <ul class="nav nav-tabs text-center">
+                            {% for error in reports %}
+                                 <li class="{% if loop.first %} active {% endif %}"><a href="#{{error.id}}" data-toggle="tab">Report n°{{error.question.id}}</a></li>
+                             {% endfor %}
+                        </ul>
+                    </div>
+                    
+                    <div class='text-center tab-content col-xs-10'>
+                   
+                        {% for error in reports %}
+                            <div  id="{{error.id}}" class='tab-pane {% if loop.first %} active {% endif %}'>
+                                <div class="col-xs-10 col-xs-offset-2">
+                                    
+                                    <div class='alert alert-{% if error.status == 2%}success{% elseif error.status == 3 %}danger{% else %}warning{%endif %}'>
+                                        Signalement marqué comme : {{ error.strStatus }}<hr/>
+                                        "{{ error.content }}"
+                                    </div>
+                                    
+                                    <h2>Question n°{{error.question.id}}</h2> <br />
+
+                                    {% set question = error.question %}
+                                    {% include "QuizzBundle:Template:question.html.twig" %}
+                                    
+                                </div>
+                            </div>
+                        {% endfor %}
+                       </div>
+
+                </div>
+                       
+            {% endif %}
+                    
+        </div>
+{% endblock %}

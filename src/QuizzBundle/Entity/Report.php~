@@ -1,0 +1,444 @@
+<?php
+
+namespace QuizzBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Report
+ *
+ * @ORM\Table(name="report")
+ * @ORM\Entity(repositoryClass="QuizzBundle\Repository\ReportRepository")
+ */
+class Report
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="nbReport", type="integer")
+     */
+    private $nbReport;
+
+    /**
+     * 
+     * @ORM\ManyToOne(targetEntity="QuizzBundle\Entity\Quizz", inversedBy="Report")
+     * @ORM\JoinColumn(name="quizz_id", referencedColumnName="id")
+     */
+    private $quizz;
+    
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="allNbDone", type="integer")
+     */
+    private $allNbDone;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="interNbDone", type="integer")
+     */
+    private $interNbDone;
+    
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="allNbRate", type="integer")
+     */
+    private $allNbRate;
+    
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="interNbRate", type="integer")
+     */
+    private $interNbRate;
+    
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="rate", type="float", scale=10)
+     */
+    private $rate;
+    
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="interRate", type="float", scale=10)
+     */
+    private $interRate;
+    
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="datetime")
+     */
+    private $date;
+    
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="dateInterval", type="datetime")
+     */
+    private $dateInterval;
+    
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="popScore", type="integer")
+     */
+    private $popScore;
+    
+    /**
+     * @var boolean
+     * 
+     * @ORM\Column(name="valid", type="boolean")
+     */
+    private $valid;
+    
+    
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set nbReport
+     *
+     * @param integer $nbReport
+     *
+     * @return Report
+     */
+    public function setNbReport($nbReport)
+    {
+        $this->nbReport = $nbReport;
+
+        return $this;
+    }
+
+    /**
+     * Get nbReport
+     *
+     * @return int
+     */
+    public function getNbReport()
+    {
+        return $this->nbReport;
+    }
+
+    /**
+     * Set allNbDone
+     *
+     * @param integer $allNbDone
+     *
+     * @return Report
+     */
+    public function setAllNbDone($allNbDone)
+    {
+        $this->allNbDone = $allNbDone;
+
+        return $this;
+    }
+
+    /**
+     * Get allNbDone
+     *
+     * @return integer
+     */
+    public function getAllNbDone()
+    {
+        return $this->allNbDone;
+    }
+
+    /**
+     * Set interNbDone
+     *
+     * @param integer $interNbDone
+     *
+     * @return Report
+     */
+    public function setInterNbDone($interNbDone)
+    {
+        $this->interNbDone = $interNbDone;
+
+        return $this;
+    }
+
+    /**
+     * Get interNbDone
+     *
+     * @return integer
+     */
+    public function getInterNbDone()
+    {
+        return $this->interNbDone;
+    }
+
+    /**
+     * Set allNbRate
+     *
+     * @param integer $allNbRate
+     *
+     * @return Report
+     */
+    public function setAllNbRate($allNbRate)
+    {
+        $this->allNbRate = $allNbRate;
+
+        return $this;
+    }
+
+    /**
+     * Get allNbRate
+     *
+     * @return integer
+     */
+    public function getAllNbRate()
+    {
+        return $this->allNbRate;
+    }
+
+    /**
+     * Set interNbRate
+     *
+     * @param integer $interNbRate
+     *
+     * @return Report
+     */
+    public function setInterNbRate($interNbRate)
+    {
+        $this->interNbRate = $interNbRate;
+
+        return $this;
+    }
+
+    /**
+     * Get interNbRate
+     *
+     * @return integer
+     */
+    public function getInterNbRate()
+    {
+        return $this->interNbRate;
+    }
+
+    /**
+     * Set rate
+     *
+     * @param integer $rate
+     *
+     * @return Report
+     */
+    public function setRate($rate)
+    {
+        $this->rate = $rate;
+
+        return $this;
+    }
+
+    /**
+     * Get rate
+     *
+     * @return integer
+     */
+    public function getRate()
+    {
+        return $this->rate;
+    }
+
+    /**
+     * Set interRate
+     *
+     * @param integer $interRate
+     *
+     * @return Report
+     */
+    public function setInterRate($interRate)
+    {
+        $this->interRate = $interRate;
+
+        return $this;
+    }
+
+    /**
+     * Get interRate
+     *
+     * @return integer
+     */
+    public function getInterRate()
+    {
+        return $this->interRate;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     *
+     * @return Report
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * Set interval
+     *
+     * @param integer $interval
+     *
+     * @return Report
+     */
+    public function setInterval($interval)
+    {
+        $this->interval = $interval;
+
+        return $this;
+    }
+
+    /**
+     * Get interval
+     *
+     * @return integer
+     */
+    public function getInterval()
+    {
+        return $this->interval;
+    }
+
+    /**
+     * Set popScore
+     *
+     * @param integer $popScore
+     *
+     * @return Report
+     */
+    public function setPopScore($popScore)
+    {
+        $this->popScore = $popScore;
+
+        return $this;
+    }
+
+    /**
+     * Get popScore
+     *
+     * @return integer
+     */
+    public function getPopScore()
+    {
+        return $this->popScore;
+    }
+
+    /**
+     * Set quizz
+     *
+     * @param \QuizzBundle\Entity\Quizz $quizz
+     *
+     * @return Report
+     */
+    public function setQuizz(\QuizzBundle\Entity\Quizz $quizz = null)
+    {
+        $this->quizz = $quizz;
+
+        return $this;
+    }
+
+    /**
+     * Get quizz
+     *
+     * @return \QuizzBundle\Entity\Quizz
+     */
+    public function getQuizz()
+    {
+        return $this->quizz;
+    }
+
+    /**
+     * Set dateInterval
+     *
+     * @param \DateTime $dateInterval
+     *
+     * @return Report
+     */
+    public function setDateInterval($dateInterval)
+    {
+        $this->dateInterval = $dateInterval;
+
+        return $this;
+    }
+
+    /**
+     * Get dateInterval
+     *
+     * @return \DateTime
+     */
+    public function getDateInterval()
+    {
+        return $this->dateInterval;
+    }
+    
+    public function calcRate($rates)
+    {
+        $rate = 0;
+        $i = 0;
+        foreach($rates as $r) {
+            $rate += $r['rate'];
+            $i += 1;
+        }
+        if($rate !== 0) {
+            $rate = $rate/$i;
+        }
+        $this->interRate = $rate;
+    }
+
+    /**
+     * Set valid
+     *
+     * @param boolean $valid
+     *
+     * @return Report
+     */
+    public function setValid($valid)
+    {
+        $this->valid = $valid;
+
+        return $this;
+    }
+
+    /**
+     * Get valid
+     *
+     * @return boolean
+     */
+    public function getValid()
+    {
+        return $this->valid;
+    }
+}

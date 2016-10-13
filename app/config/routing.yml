@@ -1,0 +1,16 @@
+admin:
+    resource: "@AdminBundle/Resources/config/routing.yml"
+    prefix:   /admin/
+
+user:
+    resource: "@UserBundle/Resources/config/routing.yml"
+    prefix:   /
+
+quizz:
+    resource: "@QuizzBundle/Resources/config/routing.yml"
+    prefix:   /quizz/
+
+general:
+    resource: "@GeneralBundle/Resources/config/routing.yml"
+    prefix:   /
+

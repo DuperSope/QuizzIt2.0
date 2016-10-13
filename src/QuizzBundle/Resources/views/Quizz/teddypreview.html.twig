@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        
+        <title>{% block title %}QuizzIt{% endblock %}</title>
+        
+        {% block stylesheets %}
+            {% stylesheets 'bundles/General/teddy/*' %}
+                <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+            {% endstylesheets %}
+        {% endblock %}
+        
+        
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    
+    <body>
+        
+        <ul id="navbar">
+                                            <li><a href="#">Quizz It !</a></li>
+
+                    
+                    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                            <li><a href="{{path('myquizzteddy') }}">Mes Quizz</a></li>
+                            {#<li><a href="#">Mes Résultats</a></li>
+                            <li><a href="#">Mon Compte</a></li>#}
+                    
+                    
+                            <li class="right"><a  href="{{path('logout') }}">Déconnexion</a></li>
+                                                        <li class="right navbar-brand"><a href="#">{{ app.user.username }}</a></li>
+
+                    {% else %}     
+                        <li><a href="{{path('login') }}">Connexion</a></li>
+                        <li><a href="{{path('register') }}">Inscription</a></li>
+                    {% endif %}
+        </ul>
+    
+    <div class="container-fluid">
+        
+        
+        
+        <div class="tab-content col-xs-8 {% if owner == 0 %}col-xs-offset-2{% endif %}">
+            
+            <div class='center' id="centralcontainer2">
+                <h1 class="text-center"> {{ quizz.name }} </h1>
+                <br />
+                    
+                            <div class="secondpanel panel-default">
+                            <div class="description">
+                                Description :
+                            </div>
+                            <div class="panel-body">
+                                {{ quizz.description }}
+                            </div>
+                            </div>
+
+                         
+                            
+                    {% if owner == 1 %}
+
+                            <div class="secondpanel panel-default">
+                                <div class="description">
+                                    Description personnelle :
+                                </div>
+                                <div class="panel-body">
+                                    {{ quizz.userdescription }}
+                                </div>
+                            </div>
+           
+                    {% endif %}
+                
+                <div class="row text-center"><br /><blockquote>
+                    Matière : <br /><b>{{quizz.strTopic }}</b><br /><br >
+                    Niveau : <br /><b>{{ quizz.strLevel }}</b><br /><br />
+                    {{quizz.nbQuestion }} questions</blockquote>
+                </div>
+                <br /><br />
+                <div class="row">
+                    <div class="col-xs-2 col-xs-offset-5 panel panel-default">
+                        <div class="text-center panel-body">
+                            <a class="bouton" href="{{path("quizz_do", { 'quizzid': quizz.id })}}">Faire le Quizz</a>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+        </div>
+        
+    </div>
+    

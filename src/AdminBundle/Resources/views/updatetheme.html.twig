@@ -1,0 +1,16 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Gestion des thèmes - {{ parent() }} {% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Modifier un thème</h1>
+        <br />
+        Nom initial : <b>{{ theme.name }}</b><br />
+        {{ form_start(form) }}
+        Nouveau nom : {{ form_widget(form.name, { "attr": { "class": "form-control auto-form" } }) }}
+        {{ form_rest(form) }}
+        <input class='btn btn-primary' type='submit' value='Mettre à jour'>
+        
+    </div>
+{% endblock %}

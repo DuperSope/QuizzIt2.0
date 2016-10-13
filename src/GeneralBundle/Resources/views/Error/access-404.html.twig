@@ -1,0 +1,25 @@
+{% extends "::base.html.twig" %}
+
+{% block title %} Erreur - {{ parent() }} {% endblock %}
+
+
+{% block body %}
+    <div class="container-fluid text-center">
+        
+        <h1>Erreur 404</h1>
+        
+        {% if code == 1 %}
+            <h4>Ce Quizz n'existe pas.</h4>
+        {% elseif code == 2 %}
+            <h4>Cet utilisateur n'existe pas.</h4>
+        {% elseif code == 3 %}
+            <h4>La page n'existe pas.</h4>
+        {% elseif code == 4 %}
+            <h4>Ce thème n'existe pas.</h4>
+        {% endif %}
+        
+        <br />
+        <a href='{{path('homepage')}}'>Retourner à l'accueil.</a>
+                               
+    </div>
+{% endblock %}

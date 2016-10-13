@@ -1,0 +1,448 @@
+<?php
+
+namespace UserBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+
+/**
+ * User
+ *
+ * @ORM\Table(name="user")
+ * @ORM\Entity(repositoryClass="UserBundle\Repository\UserRepository")
+ */
+class User implements UserInterface, \Serializable
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="username", type="string", length=15, unique=true)
+     */
+    private $username;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="password", type="string", length=200)
+     */
+    private $password;
+    
+    private $passwordVerify;
+            
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=60, unique=true)
+     */
+    private $email;     
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="f_name", type="string", length=15, nullable=true)
+     */
+    private $fName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="l_name", type="string", length=30, nullable=true)
+     */
+    private $lName;
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="salt", type="text")
+     */
+    private $salt;
+
+    /**
+     * @var array
+     *
+     * @ORM\Column(name="roles", type="array")
+     */
+    private $roles;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="datetime", nullable=true)
+     */
+    private $date;
+    
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_active", type="boolean")
+     */
+    private $isActive;
+
+    
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="nbQuizz", type="integer", nullable=false)
+     */
+    private $nbQuizz;
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set username
+     *
+     * @param string $username
+     *
+     * @return User
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+    
+
+    /**
+     * Get username
+     *
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    /**
+     * Set password
+     *
+     * @param string $password
+     *
+     * @return User
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Get password
+     *
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+    /**
+     * Set password
+     *
+     * @param string $password
+     *
+     * @return User
+     */
+    public function setPasswordVerify($password)
+    {
+        $this->passwordVerify = $password;
+
+        return $this;
+    }
+
+    /**
+     * Get password
+     *
+     * @return string
+     */
+    public function getPasswordVerify()
+    {
+        return $this->passwordVerify;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     *
+     * @return User
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+    
+    /**
+     * Set fName
+     *
+     * @param string $fName
+     *
+     * @return User
+     */
+    public function setFName($fName)
+    {
+        $this->fName = $fName;
+
+        return $this;
+    }
+
+    /**
+     * Get fName
+     *
+     * @return string
+     */
+    public function getFName()
+    {
+        return $this->fName;
+    }
+
+    /**
+     * Set lName
+     *
+     * @param string $lName
+     *
+     * @return User
+     */
+    public function setLName($lName)
+    {
+        $this->lName = $lName;
+
+        return $this;
+    }
+
+    /**
+     * Get lName
+     *
+     * @return string
+     */
+    public function getLName()
+    {
+        return $this->lName;
+    }
+
+    /**
+     * Set salt
+     *
+     * @param string $salt
+     *
+     * @return User
+     */
+    public function setSalt($salt)
+    {
+        $this->salt = $salt;
+
+        return $this;
+    }
+
+    /**
+     * Get salt
+     *
+     * @return string
+     */
+    public function getSalt()
+    {
+        return $this->salt;
+    }
+
+    /**
+     * Set roles
+     *
+     * @param array $roles
+     *
+     * @return User
+     */
+    public function setRoles($roles)
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * Get roles
+     *
+     * @return array
+     */
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+
+    /**
+     * Set date
+     *
+     * @param \DateTime $date
+     *
+     * @return User
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * Get date
+     *
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+    
+    
+    
+    
+    // Ajout Login
+    
+    public function eraseCredentials()
+    {
+    }
+    
+    
+    /** @see \Serializable::serialize() */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->username,
+            $this->password,
+            // see section on salt below
+            // $this->salt,
+        ));
+    }
+
+    /** @see \Serializable::unserialize() */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->username,
+            $this->password,
+            // see section on salt below
+            // $this->salt
+        ) = unserialize($serialized);
+    }
+    
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     *
+     * @return User
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * Set nbQuizz
+     *
+     * @param integer $nbQuizz
+     *
+     * @return User
+     */
+    public function setNbQuizz($nbQuizz)
+    {
+        $this->nbQuizz = $nbQuizz;
+
+        return $this;
+    }
+
+    /**
+     * Get nbQuizz
+     *
+     * @return integer
+     */
+    public function getNbQuizz()
+    {
+        return $this->nbQuizz;
+    }
+    
+    public function NbQuizzAdd() {
+        $this->nbQuizz = $this->nbQuizz + 1;
+
+        return $this;
+    }
+    public function NbQuizzRemove() {
+        $this->nbQuizz = $this->nbQuizz - 1;
+
+        return $this;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return User
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+}

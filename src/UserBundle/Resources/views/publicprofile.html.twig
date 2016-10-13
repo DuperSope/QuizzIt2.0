@@ -1,0 +1,67 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Profil de {{ user.username }} - {{ parent() }} {% endblock %}
+
+
+{% block body %}
+    
+    <div class="container-fluid">
+        
+        <div class="col-xs-offset-2 col-xs-8">
+            {% if app.user.id is defined %}
+                {% if user.id == app.user.id %}<div class="text-center"><a href='{{path('privateprofile', { 'userid': user.id })}}'>Aller sur mon espace privé</a><hr /></div>{% endif %}
+            {% endif %}
+            <h1>Profil de {{user.username}} : </h1><br/>
+            
+            <div class='row'><br/>
+                
+                <div class='col-xs-5'>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Description personnelle :
+                        </div>
+                        <div class="panel-body">
+                            {% if user.description|length == 0 %}
+                                <i>{{ user.username }} n'a pas écrit de description pour le moment.</i>
+                            {% endif %}    
+                            {{ user.description }}
+                        </div>
+                    </div>
+                        
+                    <div class='text-center'>
+                        <i>Inscrit depuis le {{user.date|date('d/m/y') }}</i>
+                    </div>
+                </div>
+                
+
+                <div class='col-xs-5 col-xs-offset-1'>
+                    <div class="text-center">
+                        <h5>Nombre de Quizz : {{user.nbQuizz}}</h5>
+                        {% if user.nbQuizz != quizzs|length() %}
+                            <small><i>Certains Quizz sont privés et n'apparaissent pas dans la liste.</i></small>
+                        {% endif %}
+                    </div>
+                        
+                    <br/>
+                    <table class='table table-condensed'>
+                        {% if quizzs|length() > 0 %}
+                            <tr>
+                                <th class="text-center">Nom du Quizz</th>
+                                <th class="text-center">Note</th>
+                            </tr>
+                        {% endif %}
+                        
+                        {% for quizz in quizzs %}
+                            <tr>
+                                <td><a href='{{path('quizz_preview', { 'quizzid': quizz.id }) }}'>{{quizz.name }}</a></td>
+                                <td class='text-center'>{% include "QuizzBundle:Template:rate.html.twig" %}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                    
+                </div>
+            </div>
+        </div>
+       
+    </div>
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends '::base.html.twig' %}
+
+{% block title %} Inscription - {{ parent() }} {% endblock %}
+
+
+{% block body %}
+
+    <div class='container-fluid col-xs-4 col-xs-offset-4'>
+        <h1 class='text-center'>Inscription</h1><br />
+        {% if error %}
+            <div class="text-center alert alert-warning">{{ error }}</div>
+        {% endif %}
+        <br /><br />
+        {{ form_start(form) }}
+        
+            <div class='row'>
+                <div class='col-xs-4'>
+                    {{ form_label(form.lName) }} : {{ form_widget(form.lName, { 'attr': { 'class': 'auto-form form-control' } }) }}<br/><br/>
+                    {{ form_label(form.fName) }} : {{ form_widget(form.fName, { 'attr': { 'class': 'auto-form form-control' } }) }}<br/><br/><br/>
+                </div>
+                
+                <div class='col-xs-offset-2 col-xs-6 text-center'>
+                    {{ form_label(form.username) }} : {{ form_widget(form.username, { 'attr': { 'class': 'auto-form form-control' } }) }}<br/><br/>
+                    {{ form_label(form.email) }} : {{ form_widget(form.email, { 'attr': { 'class': 'form-control' } }) }}<br/><br/><br/>   
+                </div>
+            </div>
+            <div class='row'>
+                <div class='col-xs-4 col-xs-offset-1'>
+                    {{ form_label(form.password) }} : {{ form_widget(form.password, { 'attr': { 'class': 'auto-form form-control' } }) }}
+                </div>
+                <div class='col-xs-offset-1 col-xs-4'>
+                    {{ form_label(form.passwordVerify) }} : {{ form_widget(form.passwordVerify, { 'attr': { 'class': 'auto-form form-control' } }) }}
+                </div>
+            </div>
+                
+                
+            <br />
+                
+            <br />
+                
+                
+            <br />
+            
+            <div class='row text-center'>
+                <button class='btn' type="submit">S'inscrire !</button><br/><br/>
+                <i><small>Les noms, prénoms et emails ne sont pas affichés publiquement.</small></i>
+            </div>
+        {{ form_end(form) }}
+    </div>
+
+
+{% endblock %}

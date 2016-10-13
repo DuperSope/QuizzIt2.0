@@ -1,0 +1,167 @@
+{% extends "::base.html.twig" %}
+
+{% block title %} Modifier : {{ quizz.name }} - {{ parent() }} {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+            {% javascripts
+                        '@GeneralBundle/Resources/public/myquizz.js'
+                        %}
+                        <script src="{{ asset_url }}"></script>
+                    {% endjavascripts %}
+        {% endblock %}
+        
+{% set theme_admin = 0 %}
+
+{% block body %}
+    <span id='modify' value='1'></span>
+    <span hidden id='Qi' i="{{ form.questions|length()}}"></span>
+
+    <div class="col-xs-12 col-xs-offset-1 text-center">
+         <div class="tabbable tabs-left col-xs-2" id="createquizzlateral">
+           <ul id="questionlinkcontainer" class="nav nav-tabs text-center">
+               <li class="active createquizz_link"><a href="#createquizz_general" data-toggle="tab">Général</a></li>
+               <li class="createquizz_link"><a href="#createquizz_theme" data-toggle="tab">Thème</a></li>
+               {% set i = 0 %}
+               {% for question in form.questions %}
+                    <li id="qlink_{{i}}" class="createquizz_link"><a href="#createquizz_q{{i}}" data-toggle="tab">Question {{i+1}}</a></li>
+                    {% set i = i + 1 %}
+               {% endfor %}
+               <li class="createquizz_link"><a href="#" id="addquestion" onClick="addQuestionField()">Ajouter une question</a></li>
+               <li class=""><a href="#createquizz_validation" data-toggle="tab" onClick='quizzValidation(this)'><b>Valider le Quizz</b></a></li>
+           </ul>
+        </div>
+
+       {{form_start(form)}}
+        <div class="tab-content col-xs-10" id="createquizz_content">
+                <div class="tab-pane col-xs-8 active" id="createquizz_general">
+                    <h1>Créer un Quizz</h1><hr />
+
+                    <br />
+                    <div class="row"><div class="col-xs-6 col-xs-offset-3">{{ form_label(form.name) }} {{ form_widget(form.name, { 'attr': { 'class': 'form-control'} }) }}</div></div>
+
+                    <br /><br />
+                    <div class="row">
+                        <div class="col-xs-3 left">{{ form_label(form.back) }} : {{ form_widget(form.back, { 'attr': { 'class': '' } }) }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-3 left">{{ form_label(form.private) }} : {{ form_widget(form.private, { 'attr': { 'class': '' } }) }}</div>
+                    </div>
+
+
+                    <br />
+                    <div class="row text-center"><hr />
+                        <div class="col-xs-5">{{ form_label(form.description) }} : {{ form_widget(form.description, { 'attr': { 'class': 'form-control ' } }) }}</div>
+                        <div class="col-xs-5 col-xs-offset-2">{{ form_label(form.userDescription) }} : {{ form_widget(form.userDescription, { 'attr': { 'class': 'form-control ' } }) }}</div>
+                    </div>
+                </div>
+                    
+                <div class="tab-pane col-xs-8" id="createquizz_theme"> {# Sélection de thème #}
+                    <h1>Sélectionner le thème</h1><hr />
+
+                    <div id="themecontainer">
+                        {% include "GeneralBundle:Template:theme.html.twig" %}
+                    </div>
+
+                    <div class="col-xs-5 col-xs-offset-5">
+                        <h3>Thème sélectionné</h3>
+                        <input type="text" class="text-center form-control" disabled id="theme_show" i="{{quizz.theme.id}}" value="{{quizz.theme.name}}">
+                        <span class="hidden">{{ form_widget(form.theme) }}</span>
+                    </div>
+                </div>
+
+                {% set i = 0 %}
+                {% for questionform in form.questions %}                                {#POUR TOUTES LES QUESTIONS#}
+                    {% set question = attribute(quizz.questions, i) %}
+
+                    <div class="tab-pane fade col-xs-6" id="createquizz_q{{i}}">
+                        <input type="hidden" name="TYPE_{{i}}" id="TYPE_{{i}}">
+                        {{ form_widget(questionform.questionType) }}
+                        <h1>Question n°{{i+1}}</h1><hr />
+
+                        <span id="suppquestionspace{{i}}">
+                            {% if loop.last and not loop.first %}                                          {#Si c'est la dernière, bouton supprimer#}
+                                <button i="{{i}}" class="btn btn-warning suppquestion" id="suppquestion{{i}}" onClick="suppQuestionForm(this)">Supprimer la question</button>
+                            {% endif %}
+                            </span>                            
+
+                        <div class="questiontype_{{i}}"><h3>Type de la question<br /><br />
+                        <button {% if question.questiontype == 1 %} disabled="true" {% endif %} type="button" i="{{i}}" onClick="selectQuestionType(this)" class="btn {% if question.questiontype == 1 %}btn-primary {% endif %}questiontype_btn TEXT" id="Qtype_{{i}}_TEXT">Texte</button>
+                        <button {% if question.questiontype == 2 %} disabled="true" {% endif %} type="button" i="{{i}}" onClick="selectQuestionType(this)" class="btn {% if question.questiontype == 2 %}btn-primary {% endif %}questiontype_btn QCM" id="Qtype_{{i}}_QCM">QCM</button>
+                        </h3><div id="questioncontainer{{i}}">
+
+                            <br />
+                            {{ form_label(questionform.question) }}<br/>
+                            {{ form_widget(questionform.question) }}
+
+                            {% if question.questiontype == 1 %}  {#SI Question texte#}
+                                <br /><br />
+                                {{ form_label(questionform.answer) }} :<br />
+                                {{ form_widget(questionform.answer) }}
+                            {% elseif question.questiontype == 2 %} {#SI Question QCM#}
+                                <br /><h5>Réponses : (cocher la juste)</h5>
+
+                                {% set qcmanswers = question.answer|split('[||]') %}
+                                <span hidden id='QCM{{i}}infos' v0='{{ qcmanswers|length - 1 }}' v1='{% if qcmanswers|length - 1 > 1 %}1{% else %}0{% endif %}' v2='1'></span>
+
+                                {% set qcmI = 1 %}
+                                {% for answer in qcmanswers %}                              {#Pour chaque réponse#}
+                                    {% if loop.last %}{% else %}
+                                        {% if answer[0:3] == "{T}" %}                       {#Si c'est la juste on la coche#}
+                                            {% set answer = answer|replace({'{T}' : ''}) %}
+                                            {% set checked = "checked" %}
+                                        {% else %}
+                                            {% set checked = "" %}
+                                        {% endif %}
+
+                                        <div id="QCM_Q{{i}}SPACE_{{qcmI}}" class="row"><br />
+                                            <div class="col-xs-1 col-xs-offset-1">
+                                                <input i="{{i}}" class="QCM_Q{{i}}checkbox" type="checkbox" id="QCM_Q{{i}}istrue{{qcmI}}" name="QCM_Q{{i}}istrue{{qcmI}}" {{ checked }}  onClick="checkboxQCM(this)"></div>
+                                            <div class="col-xs-8">
+                                                <input type="text" class="form-control" id="QCM_Q{{i}}answer{{qcmI}}" name="QCM_Q{{i}}answer{{qcmI}}" value="{{answer}}">
+                                            </div>
+                                        </div>
+                                        {% set qcmI = qcmI + 1 %}
+                                    {% endif %}
+                                {% endfor %}
+                                <br id="beforeme_btn_{{i}}" />
+                                <div id="QCM_btns_{{i}}">
+                                    <button type="button" class="btn btn-default" i="{{i}}" id="QCM_add_{{i}}" onClick="addChoiceQCM(this)">Ajouter une réponse</button>
+                                    {% if qcmanswers|length - 1 > 2 %}
+                                        <button type="button" class="btn btn-danger" i="{{i}}" id="QCM_supp_{{i}}" onClick="suppChoiceQCM(this)">Retirer une réponse</button>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+
+
+                        </div></div>
+
+
+
+
+                    </div>
+                    {% set i = i + 1 %}
+                {% endfor %}
+
+
+
+                <div class="tab-pane col-xs-9" id="createquizz_validation">
+                    <div id='quizz_validation_container' class="col-xs-10 col-xs-offset-1">
+
+                    </div>
+
+
+                    <div id="proto_question_label" data-prototype="{{ form_label(form.questions.vars.prototype.question)|e }}"></div>
+                    <div id="proto_question_widget" data-prototype="{{ form_widget(form.questions.vars.prototype.question)|e }}"></div>
+                    <div id="proto_answer_label" data-prototype="{{ form_label(form.questions.vars.prototype.answer)|e }}"></div>
+                    <div id="proto_answer_widget" data-prototype="{{ form_widget(form.questions.vars.prototype.answer)|e }}"></div>
+                    <div id="proto_type_widget" data-prototype="{{ form_widget(form.questions.vars.prototype.questionType)|e }}"></div>
+
+                    <div class='hidden'>{{ form_widget(form._token) }}</div>
+                </div>
+
+
+
+        </div>
+    </div>
+{% endblock %}

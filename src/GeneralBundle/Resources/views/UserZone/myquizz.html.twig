@@ -1,0 +1,190 @@
+{% extends "::base.html.twig" %}
+
+{% block title %} Mes Quizz - {{ parent() }} {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {% javascripts
+        '@GeneralBundle/Resources/public/myquizz.js'
+        %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}
+
+{% set theme_admin = 0 %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <span hidden id='Qi' i="0"></span>
+
+{#        ONGLET PRINCIPAL GAUCHE   #}
+        <div class="tabbable tabs-left ">
+            <br />
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#quizzlist" data-toggle="tab">Mes Quizz</a></li>
+                {% if errors|length() > 0 %}
+                    <li><a  class="" href="#errors" data-toggle="tab">Signalement(s)</a></li>
+                {% endif %}
+                <li><a href="#createquizz" data-toggle="tab">Créer un Quizz</a></li>
+            </ul>
+        </div>
+        
+{#        TAB-CONTENT PRINCIPAL     #}
+        <div class="tab-content col-xs-10">
+
+    {#            Liste des Quizz       #}
+            <div class="col-xs-9 col-xs-offset-1 tab-pane active" id="quizzlist" >
+                
+                <h1 class="text-center">Mes Quizz</h1>
+                
+                <table class="table table-striped">
+                    <tr>
+                        <th class="text-center">Nom du Quizz</th>
+                        <th class="text-center">Note</th>
+                        <th class="text-center"><abbr title="(nombre d'utilisateurs ayant effectué le Quizz)">Fait</abbr></th>
+                    </tr>
+
+                    {% if quizzarray|length() == 0 %}
+                        <tr><td colspan='3'></td></tr><tr></tr>
+                        <tr>
+                            <td class='text-center' colspan='3'><i>Vous n'avez pas encore créé de Quizz.</i></td>
+                        </tr>
+                        <tr></tr><tr><td colspan='3'></td></tr>
+                    {% endif %}
+                    {% for quizz in quizzarray %}
+                        <tr>
+                            <td class="text-center"><a href="{{path("quizz_preview", { 'quizzid': quizz.id })}}">{{ quizz.name }} {% if quizz.private == 1 %}<i class="fa fa-lock icon" aria-hidden="true"></i>{% endif %}</a></td>
+                            <td class="text-center">{% include "QuizzBundle:Template:rate.html.twig" %}</td>
+                            <td class="text-center">{{ quizz.done }} fois</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                
+            </div>
+                
+    {#           Création de Quizz      #}
+           <div  class="tab-pane text-center" id="createquizz">
+               
+                <div class="tabbable tabs-left" id="createquizzlateral">
+                   <ul id="questionlinkcontainer" class="nav nav-tabs text-center">
+                       <li class="active createquizz_link"><a href="#createquizz_general" data-toggle="tab">Général</a></li>
+                       <li class="createquizz_link"><a href="#createquizz_theme" data-toggle="tab">Thème</a></li>
+                       <li class="createquizz_link"><a href="#" id="addquestion" onClick="addQuestionField()">Ajouter une question</a></li>
+                       <li class=""><a href="#createquizz_validation" data-toggle="tab" onClick='quizzValidation(this)'><b>Valider le Quizz</b></a></li>
+                   </ul>
+                </div>
+                
+               {{form_start(form)}}                       
+                <div class="tab-content" id="createquizz_content">  
+                    
+                        <div class="tab-pane col-xs-8 active" id="createquizz_general">
+                            <h1>Créer un Quizz</h1><hr />
+
+                            <br />
+                            <div class="row"><div class="col-xs-6 col-xs-offset-3">{{ form_label(form.name) }} {{ form_widget(form.name, { 'attr': { 'class': 'form-control'} }) }}</div></div>
+
+                            <br /><br />
+                            <div class="row">
+                                <div class="col-xs-4 left">{{ form_label(form.back) }} : {{ form_widget(form.back, { 'attr': { 'class': '' } }) }}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-3 left">{{ form_label(form.private) }} : {{ form_widget(form.private, { 'attr': { 'class': '' } }) }}</div>
+                            </div>
+
+
+                            <br />
+                            <div class="row text-center"><hr />
+                                <div class="col-xs-5">{{ form_label(form.description) }} : {{ form_widget(form.description, { 'attr': { 'class': 'form-control ' } }) }}</div>
+                                <div class="col-xs-5 col-xs-offset-2">{{ form_label(form.userDescription) }} : {{ form_widget(form.userDescription, { 'attr': { 'class': 'form-control ' } }) }}</div>
+                            </div>
+                        </div>  
+                            
+                        <div class="tab-pane col-xs-8" id="createquizz_theme"> {# Sélection de thème #}
+                            <h1>Sélectionner le thème</h1><hr />
+
+                            <div id="themecontainer">
+                                {% include "GeneralBundle:Template:theme.html.twig" %}
+                            </div>
+
+                            <div class="col-xs-3 col-xs-offset-5">
+                                <h3>Thème sélectionné</h3>
+                                <input type="text" class="text-center form-control" disabled id="theme_show">
+                                <span class="hidden">{{ form_widget(form.theme) }}</span>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane col-xs-9" id="createquizz_validation">
+                            <div id='quizz_validation_container' class="col-xs-10 col-xs-offset-1">
+                                
+                            </div>
+                            
+                            
+                            <div id="proto_question_label" data-prototype="{{ form_label(form.questions.vars.prototype.question)|e }}"></div>
+                            <div id="proto_question_widget" data-prototype="{{ form_widget(form.questions.vars.prototype.question)|e }}"></div>
+                            <div id="proto_answer_label" data-prototype="{{ form_label(form.questions.vars.prototype.answer)|e }}"></div>
+                            <div id="proto_answer_widget" data-prototype="{{ form_widget(form.questions.vars.prototype.answer)|e }}"></div>
+                            <div id="proto_type_widget" data-prototype="{{ form_widget(form.questions.vars.prototype.questionType)|e }}"></div>
+                            
+                            <div class='hidden'>{{ form_widget(form._token) }}</div>
+                        </div>
+                        
+                </div>
+                        
+                        
+            </div>
+
+    {#            Liste des erreurs     #}
+            <div  class="tab-pane text-center" id="errors">
+               
+                <div class="tabbable tabs-left" id="errorslateral">
+                   <ul class="nav nav-tabs text-center">
+                       {% for error in errors %}
+                            <li class="{% if loop.first %}active {% endif %}"><a href="#i{{error.id}}" data-toggle="tab">Question n°{{error.question.id}}</a></li>
+                        {% endfor %}
+                   </ul>
+                </div>
+                   
+               <div class='tab-content col-xs-10'>
+                   
+                    {% for error in errors %}
+                        
+                        <div  id="i{{error.id}}" class='tab-pane {% if loop.first %}active{% endif %}'>
+                            <div class="col-xs-7">
+                                <h2>Question n°{{error.question.id}}</h2> <br />
+
+                                {% set question = error.question %}
+                                {% include "QuizzBundle:Template:question.html.twig" %}
+                                
+                            </div>
+
+                            <div class='col-xs-5'>
+                                
+                                <h2>Signalement</h2><br/>
+                                <div class="alert alert-info">
+                                    {{ error.content }}
+                                </div>
+
+                                <table class="table table-striped">
+                                    <tr></tr><tr>
+                                    {% if error.question.deleted == 0 %}<td class="text-center"><a class='no-deco' href="{{path('quizz_modify', { 'quizzid' : error.question.quizz.id }) }}">Modifier le Quizz</a></td></tr>{% endif %}
+                                    <tr><td class="text-center">Marquer comme : </a></td></tr>
+                                    <tr><td class="text-center"><a class='success' href="{{path('myquizz', { 'errorstat' : 2, 'errorid': error.id }) }}">Lu et corrigé</a></td></tr><tr></tr>
+                                    <tr><td class="text-center"><a class='danger' href="{{path('myquizz', { 'errorstat' : 3, 'errorid': error.id }) }}">Non valable</a></td></tr>
+                                </table>
+
+                            </div>  
+                        </div>
+                                
+                    {% endfor %}
+                    
+               </div>
+                
+            </div>
+                    
+        </div>
+       
+    </div>
+    
+    
+{% endblock %}

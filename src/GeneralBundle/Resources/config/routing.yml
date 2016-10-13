@@ -1,0 +1,35 @@
+homepage:
+    path:     /
+    defaults: { _controller: GeneralBundle:General:index }
+    
+search:
+    path:   /recherche
+    defaults: { _controller: GeneralBundle:General:search }
+      
+bytheme:
+    path:   /recherche-theme
+    defaults: { _controller: GeneralBundle:General:bytheme }
+    
+AJAXgetquizzbytheme:
+    path:   /ajax/getquizzbytheme
+    defaults: { _controller: GeneralBundle:AJAX:bytheme_getquizzbytheme }
+
+AJAXgettheme:
+    path:   /ajax/gettheme
+    defaults: { _controller: GeneralBundle:AJAX:bytheme_gettheme }
+    
+AJAXreturntheme:
+    path:   /ajax/returntheme
+    defaults: { _controller: GeneralBundle:AJAX:bytheme_returntheme }
+    
+myquizz:
+    path:   u/mesquizz{errorid}-{errorstat}
+    defaults: { _controller: GeneralBundle:General:myquizz, errorid: 0, errorstat: 0 }
+    
+myresults:
+    path:   u/mesresultats
+    defaults: { _controller: GeneralBundle:General:myresults }
+    
+myquizzteddy:
+    path:   u/mesquizz2
+    defaults: { _controller: GeneralBundle:General:Teddymyquizz }

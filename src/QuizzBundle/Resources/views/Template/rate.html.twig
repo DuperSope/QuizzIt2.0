@@ -1,0 +1,9 @@
+{% for i in 1..5 %}
+    {% if quizz.rate >= i %}
+        <i class="fa fa-star rating-full"></i>
+    {% elseif quizz.rate >= i-0.5 %}
+        <i class="fa fa-star-half-o rating-full"></i>
+    {% else %}
+        <i class="fa fa-star-o rating-empty"></i>
+    {% endif %}
+{% endfor %}

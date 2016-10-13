@@ -1,0 +1,104 @@
+{% extends "::base.html.twig" %}
+
+{% block title %} Résultat : {{ quizz.name }} - {{ parent() }} {% endblock %}
+
+
+{% block body %}
+    
+    
+    
+    <div class="container-fluid">
+        
+        <div class="row">
+            <div class="col-xs-8 col-xs-offset-2 text-center">
+
+                <h1>{{ quizz.name }} {% if quizzdone.nbDo > 1 %}<i><small>({{ quizzdone.nbDo }})</small></i>{% endif %}</h1><br />
+                
+            </div>
+        </div>
+        
+        <div class="row">  
+            
+            <div class="col-xs-2 col-xs-offset-2">
+               <div class="tabbable tabs-left ">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#general" data-toggle="tab">Général</a></li>
+                        {% set i = 1 %}
+                        {% for questiondone in quizzdone.questiondone %}
+                        <li><a href="#Q{{ i }}" class="{% if(questiondone.answerValid == 1) %}success{% else %}danger{% endif %}" data-toggle="tab">Question n°{{ i }}</a></li>
+                        {% set i = i + 1 %}
+                        {% endfor %}
+                    </ul>
+                </div>
+           </div>
+            
+            <div class="tab-content">
+                
+                <div id="general" class="col-xs-4 text-center pricing tab-pane active">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                {% if quizz.description == "" %}<i>Pas de description.</i>{% endif %}
+                                {{ quizz.description }}
+                            </div>
+                        </div>
+
+                            <br /><br />
+
+                    <div class=" unit{% if(quizzdone.percentage >= 75) %} price-success{% elseif(quizzdone.percentage >= 40) %} price-warning{% else %} price-danger{% endif %}">
+                        <div class="price-title{% if(quizzdone.percentage >= 75) %} {% elseif(quizzdone.percentage >= 50) %} {% else %} {% endif %}">
+                            <p>Score :</p>
+                            <h2><b>{{ quizzdone.percentage }}%</b></h2>
+                        </div>
+                        <div class="price-body">
+                            <p class="">{{ quizzdone.nbvalidanswer }} bonne(s) réponse(s) sur {{quizzdone.nbAnswer }}</p>
+                        </div>
+                        
+                    </div>
+                        
+                    <br /><br />
+                    {% if quizz.deleted == 0 %}<br/><br/><a class="btn" href="{{ path('quizz_preview', { 'quizzid' : quizz.id }) }}">Aller sur le Quizz</a>{% endif %}
+                    
+                    {% if quizz.deleted == 1 %}
+                        <br/><br/>
+                        <small><i>Le Quizz a été supprimé.</i></small>
+                    {% elseif quizz.date > quizzdone.date %}
+                        <br/><br/>
+                        <small><i>Le Quizz a été modifié depuis votre participation, votre score reste inchangé mais des erreurs sont possibles dans le détail des réponses.</i></small>
+                    {% endif %}
+                </div>
+                        
+                {% set i = 1 %}
+                    {% for questiondone in quizzdone.questiondone %}
+                        
+                        {% if quizz.nbQuestion >= i %}
+                            
+                        {% set question = attribute(quizz.questions, i-1) %}
+                        <div id="Q{{i}}" class="col-xs-4 text-center tab-pane">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <b>Question n°{{i }}</b><br /><br/>
+                                    {{question.question }}
+                                </div>
+                            </div>
+                                
+                            {% include "QuizzBundle:Template:questiondone.html.twig" %}
+                                
+                        </div>
+                    {% else %}
+                        <div id="Q{{i}}" class="col-xs-4 text-center tab-pane">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <b>Question n°{{i }}</b><br /><br/>
+                                    La question a été supprimée.
+                                </div>
+                            </div>
+                    {% endif %}
+                    {% set i = i + 1 %}
+                {% endfor %}
+            </div>
+                    
+           
+        </div>
+    </div>
+    
+{% endblock %}

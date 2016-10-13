@@ -1,0 +1,42 @@
+{% if question.questiontype == 1 %}
+    {% if questiondone.answerValid == 1 %}
+        Votre réponse : 
+        <div class="alert alert-success">{{ question.answer }}</div>
+    {% else %}
+        Votre réponse : 
+        <div class="alert alert-danger">{{ questiondone.answer }}</div>
+        Réponse correcte :
+        <div class="alert alert-success">{{ question.answer }}</div>
+    {% endif %}
+
+{% else %}
+    {% set answers = question.answer|split('[||]') %}           {#Je sépare les différentes réponses#}
+    {% for answer in answers %}                                 {#Pour chaque réponse#}
+        {% if loop.last %}
+        {% else %}
+            {% if answer[0:3] == "{T}" %}                           {#Je regarde si c'est la juste#}
+                {% set answer = answer|replace({'{T}' : ''}) %}        {#Si oui j'enlève le {T}#}
+                {% set class = "success" %}                         {#Et je mets la classe success#}
+            {% else %}
+                {% set class = "danger" %}                          {#Sinon je mets la classe danger#}
+            {% endif %}
+
+            {% if answer == questiondone.answer %}                  {#Si c'est la réponse qu'on a choisi#}
+                {% set myquestion = 1 %}
+            {% else %}
+                {% set myquestion = 0 %}
+            {% endif %}
+
+            <div class='alert alert-{{class }}'>{% if myquestion == 1%}<b>Votre réponse : </b>{% endif %} {{ answer }}</div>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+{% if question.deleted == 1 %}
+    <small><i>La question a été supprimée.</i></small>
+{% elseif question.date > quizzdone.date %}
+    <small><i>La question a récemment été modifiée, pouvant entraîner des incohérences d'affichage.</i></small>
+{% endif %}
+
+<hr/>
+{% if quizz.deleted == 0 %}<small><i><a class='no-deco' href="{{path('quizz_reporterror', { 'questionid': question.id }) }}">Signaler une erreur</a></i></small>{% endif %}

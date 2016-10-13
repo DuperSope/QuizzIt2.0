@@ -1,0 +1,43 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Espace Privé - {{ parent() }} {% endblock %}
+
+
+{% block body %}
+    
+    <div class="container-fluid">
+        
+        <div class="col-xs-offset-2 col-xs-8">
+            <h1>Sope</h1><br/>
+            
+            <div class='col-xs-4'>
+                <small><i>Ces données sont confidentielles et ne seront partagées qu'avec votre accord.</i></small><hr/>
+                
+                <b>Nom :</b> {{ user.lname }} {{ user.fname}}<br/><br/>
+                <b>Adresse mail : </b><br/><i>{{user.email }}</i>
+                
+                <br/><br/>
+                <div class='btn btn-default'><a href="{{path('changepassword')}}" class="no-deco">Changer mon mot de passe</a></div>
+                
+            </div> 
+                
+            <div class='col-xs-4 col-xs-offset-1'>
+                {{ form_start(form) }}
+                {{ form_label(form.description) }} : <br />
+                {{form_widget(form.description, { 'attr': { 'class': 'form-control ' } }) }}
+                
+                <br/>
+                <input type='submit' class='btn' value='Enregistrer'>
+                <div class='hidden'>{{ form_widget(form._token) }}</div>                
+                
+                <hr/>
+                <a href="{{path('profile', { 'userid': user.id })}}">Voir mon profil public</a>
+            </div> 
+                
+                
+        </div>
+                
+        
+       
+    </div>
+{% endblock %}

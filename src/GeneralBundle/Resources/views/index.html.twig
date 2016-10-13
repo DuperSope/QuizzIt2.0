@@ -1,0 +1,68 @@
+{% extends "::base.html.twig" %}
+
+{% block title %} Accueil - {{ parent() }} {% endblock %}
+
+{% block body %}
+    
+    <div class="col-xs-10 col-xs-offset-1 text-center">
+        <h1>{% image '@GeneralBundle/Resources/public/images/logo.png' %}
+            <img src="{{ asset_url }}" height="100px"/>
+        {% endimage %}<br />
+        Bienvenue sur Quizz It</h1>
+        <h6>Le site web de création de Quizz en tous genres !</h6>
+        <hr />
+        
+        <div id='mostpop' class='col-xs-4'>
+            <h3>Quizz les plus populaires</h3>
+            
+            <table class="table table-striped">
+                    <tr>
+                        <th class="text-center">Nom du Quizz</th>
+                        <th class="text-center">Note</th>
+                        <th class="text-center"><abbr title="(nombre d'utilisateurs ayant effectué le Quizz)">Fait</abbr></th>
+                    </tr>
+                    
+                    {% for quizz in quizzpop %}
+                        <tr>
+                            <td class="text-center"><a href="{{path("quizz_preview", { 'quizzid': quizz.quizz.id })}}">{{ quizz.quizz.name }} {% if quizz.quizz.private == 1 %}<i class="fa fa-lock icon" aria-hidden="true"></i>{% endif %}</a></td>
+                            <td class="text-center">{% include "QuizzBundle:Template:rate.html.twig" %}</td>
+                            <td class="text-center">{{ quizz.quizz.done }} fois</td>
+                        </tr>
+                    {% endfor %}
+            </table>
+            
+        </div>
+        
+        <div id='newest' class='col-xs-4'>
+            <h3>Quizz les plus récents</h3>
+            
+            <table class="table table-striped">
+                    <tr>
+                        <th class="text-center">Nom du Quizz</th>
+                        <th class="text-center">Note</th>
+                        <th class="text-center"><abbr title="(nombre d'utilisateurs ayant effectué le Quizz)">Fait</abbr></th>
+                    </tr>
+                    
+                    {% for quizz in quizznew %}
+                        <tr>
+                            <td class="text-center"><a href="{{path("quizz_preview", { 'quizzid': quizz.id })}}">{{ quizz.name }} {% if quizz.private == 1 %}<i class="fa fa-lock icon" aria-hidden="true"></i>{% endif %}</a></td>
+                            <td class="text-center">{% include "QuizzBundle:Template:rate.html.twig" %}</td>
+                            <td class="text-center">{{ quizz.done }} fois</td>
+                        </tr>
+                    {% endfor %}
+            </table>
+        </div>
+        
+        <div id='leftmenu' class='col-xs-3 col-xs-offset-1'>
+            <ul class="list-group text-center">
+                <li class="list-group-item"><a href="{{path("search")}}">Rechercher un Quizz</a></li>
+                <li class="list-group-item"><a href="{{path('bytheme')}}">Rechercher par thème</a></li>
+            </ul>
+        </div>
+
+        
+    </div>
+    
+
+
+{% endblock %}

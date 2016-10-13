@@ -1,0 +1,42 @@
+quizz_preview:
+    path:   /preview/{quizzid}
+    defaults: { _controller: QuizzBundle:Quizz:preview }
+    requirements:
+        quizzid:  \d+
+        
+quizz_do:
+    path:   /do/{quizzid}
+    defaults: { _controller: QuizzBundle:Quizz:do }
+    requirements:
+        quizzid: \d+
+        
+quizz_result:
+    path:   /result/{quizzdoneid}
+    defaults: { _controller: QuizzBundle:Quizz:dodone }
+    requirements:
+        quizzdoneid: \d+
+        
+quizz_modify:
+    path:   /modifier/{quizzid}
+    defaults: { _controller: QuizzBundle:Quizz:modify }
+    requirements:
+        quizzid: \d+
+        
+quizz_delete:
+    path:   /supprimer/{quizzid}-{confirm}
+    defaults: { _controller: QuizzBundle:Quizz:delete }
+    requirements:
+        quizzid: \d+
+        confirm: \d+
+        
+quizz_reporterror:
+    path:   /signaler/{questionid}
+    defaults:   { _controller: QuizzBundle:Quizz:reporterror }
+    requirements:
+        questionid: \d+
+        
+teddypreview:
+    path:   /preview2/{quizzid}
+    defaults: { _controller: QuizzBundle:Quizz:teddypreview }
+    requirements:
+        quizzid:  \d+

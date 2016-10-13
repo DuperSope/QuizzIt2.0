@@ -1,0 +1,26 @@
+login:
+    path:     /connexion
+    defaults: { _controller: UserBundle:Security:login }
+    
+register:
+    path:   /inscription
+    defaults: { _controller: UserBundle:Security:register }
+
+logout:
+    path:   /deconnexion
+    
+profile:
+    path:   /profil/{userid}-public
+    defaults: { _controller: UserBundle:User:publicProfile }
+    requirements:
+        userid: \d+
+        
+privateprofile:
+    path:   /profil/{userid}
+    defaults:   { _controller: UserBundle:User:privateProfile }
+    requirements:
+        userid: \d+
+        
+changepassword:
+    path:   /profil/mdp
+    defaults:   { _controller: UserBundle:Security:changePassword }

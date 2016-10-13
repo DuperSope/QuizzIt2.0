@@ -1,0 +1,39 @@
+{% if question.deleted == 1 %}
+    <div class="panel panel-default">
+        <div class="panel-body">
+            La question a été supprimée.
+        </div>
+    </div>
+{% else %}
+    <div class="panel panel-default">
+        <div class="panel-body">
+            {{question.question }}
+        </div>
+    </div>
+
+    {% if question.questiontype == 1 %}
+        Réponse correcte :
+        <div class="alert alert-success">{{ question.answer }}</div>
+    {% else %}
+        {% set answers = question.answer|split('[||]') %}           {#Je sépare les différentes réponses#}
+        {% for answer in answers %}                                 {#Pour chaque réponse#}
+            {% if loop.last %}
+            {% else %}
+                {% if answer[0:3] == "{T}" %}                           {#Je regarde si c'est la juste#}
+                    {% set answer = answer|replace({'{T}' : ''}) %}        {#Si oui j'enlève le {T}#}
+                    {% set class = "success" %}                         {#Et je mets la classe success#}
+                {% else %}
+                    {% set class = "danger" %}                          {#Sinon je mets la classe danger#}
+                {% endif %}
+
+                <div class='alert alert-{{class }}'>{{ answer }}</div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    
+    {% if error.question.date > error.date %}
+        <br/>
+        <small><i>La question a récemment été modifiée.</i></small>
+    {% endif %}
+    
+{% endif %}

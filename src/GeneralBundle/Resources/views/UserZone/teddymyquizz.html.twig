@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        
+        <title>{% block title %}QuizzIt{% endblock %}</title>
+        
+        {% block stylesheets %}
+            {% stylesheets 'bundles/General/teddy/*' %}
+                <link rel="stylesheet" href="{{ asset_url }}" type="text/css" />
+            {% endstylesheets %}
+        {% endblock %}
+        
+        
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+        
+    
+    <body>
+
+        <ul id="navbar">
+                                            <li><a href="#">Quizz It !</a></li>
+
+                    
+                    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                            <li><a href="{{path('myquizzteddy') }}">Mes Quizz</a></li>
+                            {#<li><a href="#">Mes Résultats</a></li>
+                            <li><a href="#">Mon Compte</a></li>#}
+                    
+                    
+                            <li class="right"><a  href="{{path('logout') }}">Déconnexion</a></li>
+                                                        <li class="right navbar-brand"><a href="#">{{ app.user.username }}</a></li>
+
+                    {% else %}     
+                        <li><a href="{{path('login') }}">Connexion</a></li>
+                        <li><a href="{{path('register') }}">Inscription</a></li>
+                    {% endif %}
+        </ul>
+
+    <div class="container-fluid">
+
+        
+        
+        <div class="tab-content col-xs-8">
+
+            <div class="col-xs-11 col-xs-offset-1 tab-pane active" id="quizzlist" >
+                
+                {#<div class="tab-pane tabbable tabs-left col-xs-2" id="createquizzlateral">
+                   <ul class="nav nav-tabs text-center">
+                       <li class=""><a>{{ quizzarray|lengspan }} Quizz</a></li>
+                       {% set done, average_rate = 0, 0 %}
+                       {% for quizz in quizzarray %}
+                           {% set done, average_rate = done + quizz.done, average_rate + quizz.rate %} 
+                           {% set average_rate = average_rate / quizzarray|lengspan %} 
+                       {% endfor %} 
+                       <li class=""><a>Fait {{ done }} fois</a></li>
+                       <li class=""><a>Moyenne : <b>{{ average_rate }}</b></a></li>
+                   </ul>
+                </div>#}
+                        <div id='quizz'>
+        <p>Mes Quizz</p>
+        </div>
+  
+                
+                <div id="centralcontainer" class="">
+                        
+                        <span class="tr">
+                            <span class="td">Nom du Quizz</span>
+                            <span class="td text-center">Note moyenne</span>
+                            <span class="td text-center">Fait</span>
+                        </span><br />
+                        {% for quizz in quizzarray %}
+                         
+                            <span class="tr">
+                                <span class="td"><a href="{{path("teddypreview", { 'quizzid': quizz.id })}}">{{ quizz.name }}</a></span>
+                                <span class="td text-center">{{ quizz.rate }}</span>
+                                <span class="td text-center">{{ quizz.done }} fois</span>
+                            </span>
+                        {% endfor %}
+                </div>
+            </div>       
+                
+           </div>
+       
+        </div>
+    
+    

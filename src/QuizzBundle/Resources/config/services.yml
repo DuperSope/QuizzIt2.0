@@ -1,0 +1,18 @@
+services:
+    quizzmanager:
+        class: QuizzBundle\Manager\QuizzManager
+        arguments: ["@questionmanager"]
+    questionmanager:
+        class:  QuizzBundle\Manager\QuestionManager
+    donemanager:
+        class:  QuizzBundle\Manager\DoneManager
+    errormanager:
+        class:  QuizzBundle\Manager\ErrorManager
+    ratemanager:
+        class:  QuizzBundle\Manager\RateManager
+    reportmanager:
+        class:  QuizzBundle\Manager\ReportManager
+
+#    quizz.example:
+#        class: QuizzBundle\Example
+#        arguments: ["@service_id", "plain_value", %parameter%]

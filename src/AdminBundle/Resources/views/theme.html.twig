@@ -1,0 +1,29 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Gestion des thèmes - {{ parent() }} {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+            {% javascripts
+                        '@GeneralBundle/Resources/public/theme.js'
+                        %}
+                        <script src="{{ asset_url }}"></script>
+                    {% endjavascripts %}
+        {% endblock %}
+        
+{% set theme_admin = 1 %}
+
+{% block body %}
+    <div class="container-fluid">
+        {% include "GeneralBundle:Template:theme.html.twig" %}
+        
+        {{ form_start(form) }}
+        
+        {{ form_widget(form.name) }}
+        {{ form_widget(form.parent) }}
+        {{ form_widget(form.level) }}
+        
+        {{ form_widget(form._token) }}
+        <span id="path" path='{{ path('admin_theme') }}'></span>
+    </div>
+{% endblock %}
