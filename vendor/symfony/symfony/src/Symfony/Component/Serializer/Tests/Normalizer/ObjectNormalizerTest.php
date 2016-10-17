@@ -12,9 +12,11 @@
 namespace Symfony\Component\Serializer\Tests\Normalizer;
 
 use Doctrine\Common\Annotations\AnnotationReader;
+use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
-use Symfony\Component\Serializer\Exception\UnexpectedValueException;
+use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
+use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -525,17 +527,25 @@ class ObjectNormalizerTest extends \PHPUnit_Framework_TestCase
 
     public function testDenomalizeRecursive()
     {
-        $normalizer = new ObjectNormalizer(null, null, null, new ReflectionExtractor());
-        $serializer = new Serializer(array(new DateTimeNormalizer(), $normalizer));
+        $extractor = new PropertyInfoExtractor(array(), array(new PhpDocExtractor(), new ReflectionExtractor()));
+        $normalizer = new ObjectNormalizer(null, null, null, $extractor);
+        $serializer = new Serializer(array(new ArrayDenormalizer(), new DateTimeNormalizer(), $normalizer));
 
-        $obj = $serializer->denormalize(array('inner' => array('foo' => 'foo', 'bar' => 'bar'), 'date' => '1988/01/21'), ObjectOuter::class);
+        $obj = $serializer->denormalize(array(
+            'inner' => array('foo' => 'foo', 'bar' => 'bar'),
+            'date' => '1988/01/21',
+            'inners' => array(array('foo' => 1), array('foo' => 2)),
+        ), ObjectOuter::class);
+
         $this->assertEquals('foo', $obj->getInner()->foo);
         $this->assertEquals('bar', $obj->getInner()->bar);
         $this->assertEquals('1988-01-21', $obj->getDate()->format('Y-m-d'));
+        $this->assertEquals(1, $obj->getInners()[0]->foo);
+        $this->assertEquals(2, $obj->getInners()[1]->foo);
     }
 
     /**
-     * @expectedException UnexpectedValueException
+     * @expectedException \Symfony\Component\Serializer\Exception\UnexpectedValueException
      * @expectedExceptionMessage The type of the "date" attribute for class "Symfony\Component\Serializer\Tests\Normalizer\ObjectOuter" must be one of "DateTimeInterface" ("string" given).
      */
     public function testRejectInvalidType()
@@ -544,6 +554,41 @@ class ObjectNormalizerTest extends \PHPUnit_Framework_TestCase
         $serializer = new Serializer(array($normalizer));
 
         $serializer->denormalize(array('date' => 'foo'), ObjectOuter::class);
+    }
+
+    /**
+     * @expectedException \Symfony\Component\Serializer\Exception\UnexpectedValueException
+     * @expectedExceptionMessage The type of the key "a" must be "int" ("string" given).
+     */
+    public function testRejectInvalidKey()
+    {
+        $extractor = new PropertyInfoExtractor(array(), array(new PhpDocExtractor(), new ReflectionExtractor()));
+        $normalizer = new ObjectNormalizer(null, null, null, $extractor);
+        $serializer = new Serializer(array(new ArrayDenormalizer(), new DateTimeNormalizer(), $normalizer));
+
+        $serializer->denormalize(array('inners' => array('a' => array('foo' => 1))), ObjectOuter::class);
+    }
+
+    public function testExtractAttributesRespectsFormat()
+    {
+        $normalizer = new FormatAndContextAwareNormalizer();
+
+        $data = new ObjectDummy();
+        $data->setFoo('bar');
+        $data->bar = 'foo';
+
+        $this->assertSame(array('foo' => 'bar', 'bar' => 'foo'), $normalizer->normalize($data, 'foo_and_bar_included'));
+    }
+
+    public function testExtractAttributesRespectsContext()
+    {
+        $normalizer = new FormatAndContextAwareNormalizer();
+
+        $data = new ObjectDummy();
+        $data->setFoo('bar');
+        $data->bar = 'foo';
+
+        $this->assertSame(array('foo' => 'bar', 'bar' => 'foo'), $normalizer->normalize($data, null, array('include_foo_and_bar' => true)));
     }
 }
 
@@ -718,6 +763,11 @@ class ObjectOuter
     private $inner;
     private $date;
 
+    /**
+     * @var ObjectInner[]
+     */
+    private $inners;
+
     public function getInner()
     {
         return $this->inner;
@@ -737,10 +787,36 @@ class ObjectOuter
     {
         return $this->date;
     }
+
+    public function setInners(array $inners)
+    {
+        $this->inners = $inners;
+    }
+
+    public function getInners()
+    {
+        return $this->inners;
+    }
 }
 
 class ObjectInner
 {
     public $foo;
     public $bar;
+}
+
+class FormatAndContextAwareNormalizer extends ObjectNormalizer
+{
+    protected function isAllowedAttribute($classOrObject, $attribute, $format = null, array $context = array())
+    {
+        if (in_array($attribute, array('foo', 'bar')) && 'foo_and_bar_included' === $format) {
+            return true;
+        }
+
+        if (in_array($attribute, array('foo', 'bar')) && isset($context['include_foo_and_bar']) && true === $context['include_foo_and_bar']) {
+            return true;
+        }
+
+        return false;
+    }
 }
