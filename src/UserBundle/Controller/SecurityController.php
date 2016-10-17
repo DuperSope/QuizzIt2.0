@@ -56,7 +56,7 @@ class SecurityController extends Controller
             $factory = $this->get('security.encoder_factory');
 
             $errormessage = $manager->addUser($form, $em, $user, $factory);
-            if($errormessage == null) {
+            if($errormessage === null) {
                 return $this->redirect($this->generateUrl("login"));
             }
         }

@@ -3,7 +3,6 @@
 namespace QuizzBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Question
@@ -45,7 +44,7 @@ class Question
 
     /**
      * 
-     * @ORM\ManyToOne(targetEntity="Quizz", nversedBy="questions, cascade={"remove"})
+     * @ORM\ManyToOne(targetEntity="Quizz", inversedBy="questions", cascade={"remove"})
      * @ORM\JoinColumn(name="quizz_id", referencedColumnName="id")
      */
     private $quizz;

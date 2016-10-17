@@ -3,8 +3,6 @@
 namespace QuizzBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use UserBundle\Entity\User;
-use QuizzBundle\Entity\Question;
 
 /**
  * Error

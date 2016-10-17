@@ -3,7 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Applications/MAMP/htdocs/QuizzIt2.0/src/GeneralBundle/Resources/public/bytheme.js</file>
+            <file>file:/Applications/MAMP/htdocs/QuizzIt2.0/src/QuizzBundle/Entity/QuestionDone.php</file>
+            <file>file:/Applications/MAMP/htdocs/QuizzIt2.0/src/QuizzBundle/Entity/Question.php</file>
+            <file>file:/Applications/MAMP/htdocs/QuizzIt2.0/src/GeneralBundle/Entity/Theme.php</file>
+            <file>file:/Applications/MAMP/htdocs/QuizzIt2.0/src/QuizzBundle/Entity/QuizzDone.php</file>
+            <file>file:/Applications/MAMP/htdocs/QuizzIt2.0/src/GeneralBundle/Resources/views/UserZone/myresults.html.twig</file>
         </group>
     </open-files>
 </project-private>

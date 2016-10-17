@@ -36,12 +36,6 @@ class UserManager
         
     }
     
-    public function setDescription($form, $em) {
-        
-        $user = $form->getData();
-        
-        $em->flush();
-    }
     
     public function changePassword($user, $request, $factory, $em) {
         $encoder = $factory->getEncoder($user);

@@ -7,27 +7,6 @@ class QuizzManager
 {
     protected $questionmanager;
     
-    private $level_array = array(0 => "Autre",
-                            1 => "Terminale",
-                            2 => "Première",
-                            3 => "Seconde",
-                            4 => "Troisième",
-                            5 => "Quatrième",
-                            6 => "Cinquième",
-                            7 => "Sixième");
-        
-    private $topic_array = array(1 => "Français",
-                            2 => "Maths",
-                            3 => "Physique Chimie",
-                            4 => "SVT",
-                            5 => "Histoire Géographie",
-                            6 => "Anglais",
-                            7 => "Espagnol",
-                            8 => "Italien",
-                            9 => "Allemand",
-                            10 => "Philosophie",
-                            11 => "Autre");
-    
     public function __construct($questionmanager) {
         $this->questionmanager = $questionmanager;
     }

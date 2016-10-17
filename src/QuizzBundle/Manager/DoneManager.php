@@ -59,7 +59,7 @@ class DoneManager
     public function addQuestionDone($question, $questiondone) {
         
         if($question->getQuestionType() == 1) {
-            if($questiondone->getAnswer() == null) {
+            if($questiondone->getAnswer() === null) {
                 $questiondone->setAnswer("Pas de réponse.");
                 $questiondone->setAnswerValid(0);
             }
@@ -73,7 +73,7 @@ class DoneManager
             $validAnswer = explode("[||]", $validAnswer[1]);
             $validAnswer = $validAnswer[0];
             
-            if($questiondone->getAnswer() == null) {
+            if($questiondone->getAnswer() === null) {
                 $questiondone->setAnswerValid(0);
             }
             else if($validAnswer == $questiondone->getAnswer()) {

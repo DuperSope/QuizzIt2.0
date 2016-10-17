@@ -1,0 +1,143 @@
+#navbar {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: auto;
+	background-color: #333;
+}
+
+#navbar li {
+	float: left;
+}
+
+.right {
+	float: right !important;
+}
+
+#navbar li a {
+	display: block;
+	float: left;
+	color: white;
+	padding: 18px 26px;
+	text-decoration: none;
+	font-family:Verdana, sans-serif;
+}
+
+#navbar li a:hover {
+	background-color: black;
+}
+
+
+#quizz {
+	margin-top: 100px;
+	padding: 0px 0px 10px 0px;
+	width:60%;
+	margin-left: 20%;
+}
+
+#quizz p {
+    font-family:Verdana, sans-serif;
+    font-weight:bold;
+    font-size:25px;
+}
+
+
+#centralcontainer {
+	display:table;
+	background:white;
+	border: 1px solid black;
+	margin:0px;
+	width:60%;
+	margin-left: 20%;
+}
+
+
+.tr {
+	display: table-row ;
+       
+}
+    
+.tr:first-child{
+        font-weight:bold;
+}
+
+.td {
+	display: table-cell;
+        padding: 2px 0px 2px 20px;
+}
+
+.td a {
+    text-decoration: none;
+    color: black;
+}
+
+#leftpanel {
+    float:left;
+    display:line;
+	border: 1px solid #555;
+}
+
+
+#leftpanel ul {
+    margin-left: -20px;
+    margin-right: 5px;
+    width: 100px;
+}
+
+#leftpanel li {
+    padding-bottom: 10px;    
+}
+
+.b {
+    font-weight: bold;
+}
+
+.center {
+    text-align: center;
+}
+
+.bouton {
+    display:block;
+    border: #555 solid;
+    background-color: #555;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-bottom:20px;
+    margin-left:43.5%;
+    width: 100px;
+}
+
+#centralcontainer2 {
+        margin-top:100px; 
+	display:table;
+        display:block;
+	background:white;
+	border: 1px solid black;
+	width:60%;
+	margin-left: 20%;
+}
+
+.firstpanel{
+    display:inline-block;
+    border: 1px solid black;
+    border-radius: 5px;
+    
+}
+
+.secondpanel{
+    border:1px solid black;
+    display:inline-block;
+    border-radius: 5px;
+}
+
+.description {
+     padding:5px;
+     font-weight:bold;
+     border-bottom:1px solid gray;
+}
+
+.panel-body {
+    padding:5px;
+}
+

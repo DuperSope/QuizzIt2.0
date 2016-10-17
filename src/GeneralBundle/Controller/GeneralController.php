@@ -6,8 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use QuizzBundle\Entity\Quizz;
 use QuizzBundle\Entity\Question;
 use QuizzBundle\Form\QuizzType;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 class GeneralController extends Controller
 {

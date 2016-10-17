@@ -5,7 +5,6 @@ namespace AdminBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use GeneralBundle\Form\ThemeType;
 use GeneralBundle\Form\ThemeTypeUpdate;
-use GeneralBundle\Entity\Theme;
 
 class AdminController extends Controller
 {
@@ -45,7 +44,7 @@ class AdminController extends Controller
         $theme_r = $em->getRepository("GeneralBundle:Theme");
         
         $theme = $theme_r->findOneById($themeid);
-        if($theme == null) {    // Si le thème à modifier est inexistant
+        if($theme === null) {    // Si le thème à modifier est inexistant
             return $this->render("GeneralBundle:Error:access-404.html.twig", array(
                 "code" => 4,
             ));

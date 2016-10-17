@@ -44,7 +44,7 @@ class QuestionManager
     public function setId($question, $quizz) {
         $question->setQuizz($quizz);
         
-        if($question->getQuizz() == null) {
+        if($question->getQuizz() === null) {
             $question->setDeleted(true);
         } else {
             $question->setDeleted(false);
